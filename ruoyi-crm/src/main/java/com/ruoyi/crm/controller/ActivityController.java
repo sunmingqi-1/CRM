@@ -25,7 +25,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 活动管理Controller
  * 
  * @author ruoyi
- * @date 2023-05-29
+ * @date 2023-05-30
  */
 @RestController
 @RequestMapping("/crm/activity")

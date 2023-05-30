@@ -2,15 +2,17 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="渠道来源" prop="channel">
-        <el-input
-          v-model="queryParams.channel"
-          placeholder="请输入渠道来源"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.channel" placeholder="请输入渠道来源" clearable    @keyup.enter.native="handleQuery">
+          <el-option
+            v-for="dict in dict.type.clues_item"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="活动类型1折扣2代金券" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择活动类型1折扣2代金券" clearable>
+        <el-select v-model="queryParams.type" placeholder="请选择活动类型1折扣2代金券" clearable @keyup.enter.native="handleQuery">
           <el-option
             v-for="dict in dict.type.channel_type"
             :key="dict.value"
@@ -34,6 +36,7 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
+        </el-select>
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
@@ -125,20 +128,12 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="活动名称" align="center" prop="name" />
-      <el-table-column label="渠道来源" align="center" prop="channel" />
+      <el-table-column label="渠道来源" align="center" prop="channel" :formatter="channelFormatter" />
       <el-table-column label="活动简介" align="center" prop="info" />
-      <el-table-column label="活动类型1折扣2代金券" align="center" prop="type">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.channel_type" :value="scope.row.type"/>
-        </template>
-      </el-table-column>
+      <el-table-column label="活动类型1折扣2代金券" align="center" prop="type" :formatter="chanFormatter" />
       <el-table-column label="折扣" align="center" prop="discount" />
       <el-table-column label="课程代金券" align="center" prop="vouchers" />
-      <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.activity_status" :value="scope.row.status"/>
-        </template>
-      </el-table-column>
+      <el-table-column label="状态" align="center" prop="status" :formatter="statusFormatter" />
       <el-table-column label="开始时间" align="center" prop="beginTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.beginTime, '{y}-{m}-{d}') }}</span>
@@ -169,7 +164,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -248,7 +243,7 @@ import { listActivity, getActivity, delActivity, addActivity, updateActivity } f
 
 export default {
   name: "Activity",
-  dicts: ['activity_status', 'channel_type'],
+  dicts: ['activity_status', 'channel_type','clues_item'],
   data() {
     return {
       // 遮罩层
@@ -397,6 +392,15 @@ export default {
       this.download('crm/activity/export', {
         ...this.queryParams
       }, `activity_${new Date().getTime()}.xlsx`)
+    },
+    channelFormatter(row){
+        return this.selectDictLabel(this.dict.type.clues_item,row.channel)
+    },
+    statusFormatter(row){
+      return this.selectDictLabel(this.dict.type.activity_status,row.status)
+    },
+    chanFormatter(row){
+      return this.selectDictLabel(this.dict.type.channel_type,row.type)
     }
   }
 };

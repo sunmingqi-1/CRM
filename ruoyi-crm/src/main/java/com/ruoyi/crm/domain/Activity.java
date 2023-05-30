@@ -11,7 +11,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 活动管理对象 tb_activity
  * 
  * @author ruoyi
- * @date 2023-05-29
+ * @date 2023-05-30
  */
 public class Activity extends BaseEntity
 {

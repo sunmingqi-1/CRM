@@ -7,7 +7,7 @@ import com.ruoyi.crm.domain.Activity;
  * 活动管理Mapper接口
  * 
  * @author ruoyi
- * @date 2023-05-29
+ * @date 2023-05-30
  */
 public interface ActivityMapper 
 {

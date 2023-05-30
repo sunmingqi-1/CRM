@@ -12,7 +12,7 @@ import com.ruoyi.crm.service.IActivityService;
  * 活动管理Service业务层处理
  * 
  * @author ruoyi
- * @date 2023-05-29
+ * @date 2023-05-30
  */
 @Service
 public class ActivityServiceImpl implements IActivityService 
