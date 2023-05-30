@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.crm.mapper.ClueMapper">
+    
+    <resultMap type="Clue" id="ClueResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="phone"    column="phone"    />
+        <result property="channel"    column="channel"    />
+        <result property="activityId"    column="activity_id"    />
+        <result property="sex"    column="sex"    />
+        <result property="age"    column="age"    />
+        <result property="weixin"    column="weixin"    />
+        <result property="qq"    column="qq"    />
+        <result property="level"    column="level"    />
+        <result property="subject"    column="subject"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="falseCount"    column="false_count"    />
+        <result property="nextTime"    column="next_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="transfer"    column="transfer"    />
+        <result property="endTime"    column="end_time"    />
+    </resultMap>
+
+    <sql id="selectClueVo">
+        select id, name, phone, channel, activity_id, sex, age, weixin, qq, level, subject, status, create_time, create_by, false_count, next_time, update_time, transfer, end_time from tb_clue
+    </sql>
+
+    <select id="selectClueList" parameterType="Clue" resultMap="ClueResult">
+        <include refid="selectClueVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="channel != null  and channel != ''"> and channel = #{channel}</if>
+            <if test="activityId != null "> and activity_id = #{activityId}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="weixin != null  and weixin != ''"> and weixin = #{weixin}</if>
+            <if test="qq != null  and qq != ''"> and qq = #{qq}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="falseCount != null "> and false_count = #{falseCount}</if>
+            <if test="nextTime != null "> and next_time = #{nextTime}</if>
+            <if test="transfer != null  and transfer != ''"> and transfer = #{transfer}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectClueById" parameterType="Long" resultMap="ClueResult">
+        <include refid="selectClueVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertClue" parameterType="Clue" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_clue
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="phone != null">phone,</if>
+            <if test="channel != null">channel,</if>
+            <if test="activityId != null">activity_id,</if>
+            <if test="sex != null">sex,</if>
+            <if test="age != null">age,</if>
+            <if test="weixin != null">weixin,</if>
+            <if test="qq != null">qq,</if>
+            <if test="level != null">level,</if>
+            <if test="subject != null">subject,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="falseCount != null">false_count,</if>
+            <if test="nextTime != null">next_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="transfer != null">transfer,</if>
+            <if test="endTime != null">end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="channel != null">#{channel},</if>
+            <if test="activityId != null">#{activityId},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="age != null">#{age},</if>
+            <if test="weixin != null">#{weixin},</if>
+            <if test="qq != null">#{qq},</if>
+            <if test="level != null">#{level},</if>
+            <if test="subject != null">#{subject},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="falseCount != null">#{falseCount},</if>
+            <if test="nextTime != null">#{nextTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="transfer != null">#{transfer},</if>
+            <if test="endTime != null">#{endTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClue" parameterType="Clue">
+        update tb_clue
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="channel != null">channel = #{channel},</if>
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="weixin != null">weixin = #{weixin},</if>
+            <if test="qq != null">qq = #{qq},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="subject != null">subject = #{subject},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="falseCount != null">false_count = #{falseCount},</if>
+            <if test="nextTime != null">next_time = #{nextTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="transfer != null">transfer = #{transfer},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteClueById" parameterType="Long">
+        delete from tb_clue where id = #{id}
+    </delete>
+
+    <delete id="deleteClueByIds" parameterType="String">
+        delete from tb_clue where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

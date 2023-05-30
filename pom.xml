@@ -89,7 +89,7 @@
             <!-- io常用工具类 -->
             <dependency>
                 <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
+                  <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
             </dependency>
 
@@ -180,6 +180,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>ruoyi-crm</module>
     </modules>
     <packaging>pom</packaging>
 

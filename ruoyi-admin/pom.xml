@@ -16,8 +16,12 @@
     </description>
 
     <dependencies>
-
-        <!-- spring-boot-devtools -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-crm</artifactId>
+            <version>3.8.5</version>
+        </dependency>
+        <!-- spring-boot-devtools   -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

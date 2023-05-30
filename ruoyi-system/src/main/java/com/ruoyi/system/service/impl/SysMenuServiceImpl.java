@@ -487,7 +487,7 @@ public class SysMenuServiceImpl implements ISysMenuService
         {
             if (hasChild(list, tChild))
             {
-                recursionFn(list, tChild);
+//                recursionFn(list, tChild);
             }
         }
     }
