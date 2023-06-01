@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="客户姓名" prop="name">
+      <el-form-item label="线索ID" prop="id">
         <el-input
-          v-model="queryParams.name"
-          placeholder="请输入客户姓名"
+          v-model="queryParams.id"
+          placeholder="请输入线索ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -17,92 +17,35 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="渠道" prop="channel">
-        <el-input
-          v-model="queryParams.channel"
-          placeholder="请输入渠道"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="渠道来源" prop="channel">
+        <el-select v-model="queryParams.channel" placeholder="请输入渠道来源" clearable    @keyup.enter.native="handleQuery">
+          <el-option
+            v-for="dict in dict.type.clues_item"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="活动id" prop="activityId">
-        <el-input
-          v-model="queryParams.activityId"
-          placeholder="请输入活动id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择状态"  clearable    @keyup.enter.native="handleQuery">
+          <el-option
+            v-for="dict in dict.type.clue_status"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="年龄" prop="age">
-        <el-input
-          v-model="queryParams.age"
-          placeholder="请输入年龄"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="微信" prop="weixin">
-        <el-input
-          v-model="queryParams.weixin"
-          placeholder="请输入微信"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="qq" prop="qq">
-        <el-input
-          v-model="queryParams.qq"
-          placeholder="请输入qq"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="意向等级" prop="level">
-        <el-input
-          v-model="queryParams.level"
-          placeholder="请输入意向等级"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="意向学科" prop="subject">
-        <el-input
-          v-model="queryParams.subject"
-          placeholder="请输入意向学科"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="伪线索失败次数(最大数3次)" prop="falseCount">
-        <el-input
-          v-model="queryParams.falseCount"
-          placeholder="请输入伪线索失败次数(最大数3次)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="${comment}" prop="nextTime">
-        <el-date-picker clearable
-          v-model="queryParams.nextTime"
-          type="date"
+      <el-form-item label="时间" prop="data">
+        <el-date-picker
+          v-model="queryParams.data"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           value-format="yyyy-MM-dd"
-          placeholder="请选择${comment}">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="是否转派" prop="transfer">
-        <el-input
-          v-model="queryParams.transfer"
-          placeholder="请输入是否转派"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="线索失效时间" prop="endTime">
-        <el-date-picker clearable
-          v-model="queryParams.endTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择线索失效时间">
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -162,25 +105,17 @@
       <el-table-column label="线索id" align="center" prop="id" />
       <el-table-column label="客户姓名" align="center" prop="name" />
       <el-table-column label="手机号" align="center" prop="phone" />
-      <el-table-column label="渠道" align="center" prop="channel" />
-      <el-table-column label="活动id" align="center" prop="activityId" />
-      <el-table-column label="1 男 0 女" align="center" prop="sex" />
-      <el-table-column label="年龄" align="center" prop="age" />
-      <el-table-column label="微信" align="center" prop="weixin" />
-      <el-table-column label="qq" align="center" prop="qq" />
-      <el-table-column label="意向等级" align="center" prop="level" />
-      <el-table-column label="意向学科" align="center" prop="subject" />
-      <el-table-column label="状态(已分配1  进行中2  回收3  伪线索4)" align="center" prop="status" />
-      <el-table-column label="伪线索失败次数(最大数3次)" align="center" prop="falseCount" />
-      <el-table-column label="${comment}" align="center" prop="nextTime" width="180">
+      <el-table-column label="渠道来源" align="center" prop="channel" :formatter="channelselect" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.nextTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{mm}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否转派" align="center" prop="transfer" />
-      <el-table-column label="线索失效时间" align="center" prop="endTime" width="180">
+      <el-table-column label="归属人" align="center" prop="createBy" width="180"  />
+      <el-table-column label="状态" align="center" prop="status" width="180" :formatter="createByselect"  />
+      <el-table-column label="下次跟进时间" align="center" prop="nextTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.nextTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -202,7 +137,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -244,12 +179,12 @@
         <el-form-item label="伪线索失败次数(最大数3次)" prop="falseCount">
           <el-input v-model="form.falseCount" placeholder="请输入伪线索失败次数(最大数3次)" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="nextTime">
+        <el-form-item label="时间" prop="nextTime">
           <el-date-picker clearable
             v-model="form.nextTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择${comment}">
+            placeholder="请选择时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="是否转派" prop="transfer">
@@ -277,6 +212,7 @@ import { listClue, getClue, delClue, addClue, updateClue } from "@/api/crm/clue"
 
 export default {
   name: "Clue",
+  dicts:["clues_item","sys_user_sex","course_subject","clues_level","clue_status"],
   data() {
     return {
       // 遮罩层
@@ -299,6 +235,7 @@ export default {
       open: false,
       // 查询参数
       queryParams: {
+        id:null,
         pageNum: 1,
         pageSize: 10,
         name: null,
@@ -315,7 +252,9 @@ export default {
         falseCount: null,
         nextTime: null,
         transfer: null,
-        endTime: null
+        startTime:null,
+        endTime: null,
+        data:[]
       },
       // 表单参数
       form: {},
@@ -332,7 +271,7 @@ export default {
     getList() {
       this.loading = true;
       listClue(this.queryParams).then(response => {
-        this.clueList = response.rows;
+        this.clueList = response.rows;qqq
         this.total = response.total;
         this.loading = false;
       });
@@ -369,6 +308,13 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
+      if(this.queryParams.data!=null){
+        this.queryParams.startTime=this.queryParams.data[0].toString();
+        this.queryParams.endTime=this.queryParams.data[1].toString();
+      }else {
+        this.queryParams.startTime=null;
+        this.queryParams.endTime=null
+      }
       this.queryParams.pageNum = 1;
       this.getList();
     },
@@ -434,6 +380,21 @@ export default {
       this.download('crm/clue/export', {
         ...this.queryParams
       }, `clue_${new Date().getTime()}.xlsx`)
+    },
+    channelselect(row){
+      return this.selectDictLabel(this.dict.type.clues_item,row.channel)
+    },
+    sexx(row){
+      return this.selectDictLabel(this.dict.type.sys_user_sex,row.sex)
+    },
+    selectsubject(row){
+      return this.selectDictLabel(this.dict.type.course_subject,row.subject)
+    },
+    selectlevle(row){
+      return this.selectDictLabel(this.dict.type.clues_level,row.level)
+    },
+    createByselect(row){
+      return this.selectDictLabel(this.dict.type.clue_status,row.status)
     }
   }
 };

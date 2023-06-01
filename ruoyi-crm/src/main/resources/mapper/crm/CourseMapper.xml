@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="info"    column="info"    />
         <result property="createTime"    column="create_time"    />
         <result property="isDelete"    column="is_delete"    />
+
     </resultMap>
 
     <sql id="selectCourseVo">
@@ -22,14 +23,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectCourseList" parameterType="Course" resultMap="CourseResult">
         <include refid="selectCourseVo"/>
-        <where>  
-            <if test="code != null  and code != ''"> and code = #{code}</if>
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
-            <if test="price != null "> and price = #{price}</if>
-            <if test="applicablePerson != null  and applicablePerson != ''"> and applicable_person = #{applicablePerson}</if>
-            <if test="info != null  and info != ''"> and info = #{info}</if>
-            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        <where>
+            <if test="code != null  and code != ''">and code = #{code}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="subject != null  and subject != ''">and subject = #{subject}</if>
+            <if test="price != null ">and price = #{price}</if>
+            <if test="applicablePerson != null  and applicablePerson != ''">and applicable_person =  #{applicablePerson}   </if>
+            <if test="info != null  and info != ''">and info = #{info}</if>
+            <if test="isDelete != null ">and is_delete = #{isDelete}</if>
+            <if test="startTime!=null and startTime!='' "> and create_time between #{startTime} and #{endTime}
+            </if>
         </where>
     </select>
     

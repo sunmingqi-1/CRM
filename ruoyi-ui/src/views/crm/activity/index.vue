@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="活动名称" prop="name">
+        <el-input
+          v-model="queryParams.name"
+          placeholder="请输入活动名称"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="渠道来源" prop="channel">
         <el-select v-model="queryParams.channel" placeholder="请输入渠道来源" clearable    @keyup.enter.native="handleQuery">
           <el-option
@@ -11,8 +19,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="活动类型1折扣2代金券" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择活动类型1折扣2代金券" clearable @keyup.enter.native="handleQuery">
+      <el-form-item label="活动类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请输入活动类型" clearable @keyup.enter.native="handleQuery">
           <el-option
             v-for="dict in dict.type.channel_type"
             :key="dict.value"
@@ -21,32 +29,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="折扣" prop="discount">
-        <el-input
-          v-model="queryParams.discount"
-          placeholder="请输入折扣"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="课程代金券" prop="vouchers">
-        <el-input
-          v-model="queryParams.vouchers"
-          placeholder="请输入课程代金券"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
-          <el-option
-            v-for="dict in dict.type.activity_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
+
       </el-form-item>
       <el-form-item label="开始时间" prop="beginTime">
         <el-date-picker clearable
@@ -56,22 +39,7 @@
           placeholder="请选择开始时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="结束时间" prop="endTime">
-        <el-date-picker clearable
-          v-model="queryParams.endTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择结束时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="活动编码" prop="code">
-        <el-input
-          v-model="queryParams.code"
-          placeholder="请输入活动编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -126,25 +94,18 @@
 
     <el-table v-loading="loading" :data="activityList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="id" align="center" prop="id" />
+      <el-table-column label="活动编码" align="center" prop="code" />
       <el-table-column label="活动名称" align="center" prop="name" />
       <el-table-column label="渠道来源" align="center" prop="channel" :formatter="channelFormatter" />
       <el-table-column label="活动简介" align="center" prop="info" />
-      <el-table-column label="活动类型1折扣2代金券" align="center" prop="type" :formatter="chanFormatter" />
-      <el-table-column label="折扣" align="center" prop="discount" />
-      <el-table-column label="课程代金券" align="center" prop="vouchers" />
+      <el-table-column label="活动类型" align="center" prop="type" :formatter="chanFormatter" />
       <el-table-column label="状态" align="center" prop="status" :formatter="statusFormatter" />
-      <el-table-column label="开始时间" align="center" prop="beginTime" width="180">
+      <el-table-column label="活动时间" align="center" prop="endTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.beginTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.beginTime, '{y}-{m}-{d}') }}—{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="结束时间" align="center" prop="endTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="活动编码" align="center" prop="code" />
+
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -180,13 +141,20 @@
           <el-input v-model="form.name" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="渠道来源" prop="channel">
-          <el-input v-model="form.channel" placeholder="请输入渠道来源" />
+          <el-select v-model="form.channel" placeholder="请输入渠道来源" clearable    @keyup.enter.native="handleQuery">
+            <el-option
+              v-for="dict in dict.type.clues_item"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="活动简介" prop="info">
           <el-input v-model="form.info" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="活动类型1折扣2代金券" prop="type">
-          <el-select v-model="form.type" placeholder="请选择活动类型1折扣2代金券">
+        <el-form-item label="活动类型" prop="type">
+          <el-select v-model="queryParams.type" placeholder="请选择活动类型1折扣2代金券">
             <el-option
               v-for="dict in dict.type.channel_type"
               :key="dict.value"
@@ -195,10 +163,10 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="折扣" prop="discount">
+        <el-form-item v-if="queryParams.type=='1' " label="折扣" prop="discount">
           <el-input v-model="form.discount" placeholder="请输入折扣" />
         </el-form-item>
-        <el-form-item label="课程代金券" prop="vouchers">
+        <el-form-item v-if="queryParams.type=='2'" label="课程代金券" prop="vouchers">
           <el-input v-model="form.vouchers" placeholder="请输入课程代金券" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
@@ -400,7 +368,10 @@ export default {
       return this.selectDictLabel(this.dict.type.activity_status,row.status)
     },
     chanFormatter(row){
-      return this.selectDictLabel(this.dict.type.channel_type,row.type)
+      if(row.type=='1'){
+        return this.selectDictLabel(this.dict.type.channel_type,row.type)+"/"+row.discount+"折"
+      }
+      return this.selectDictLabel(this.dict.type.channel_type,row.type)+"/"+row.vouchers+"元"
     }
   }
 };

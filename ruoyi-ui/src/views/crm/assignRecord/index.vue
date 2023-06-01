@@ -55,7 +55,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['crm:record:add']"
+          v-hasPermi="['crm:assignRecord:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -66,7 +66,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['crm:record:edit']"
+          v-hasPermi="['crm:assignRecord:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -77,7 +77,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['crm:record:remove']"
+          v-hasPermi="['crm:assignRecord:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -87,13 +87,13 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['crm:record:export']"
+          v-hasPermi="['crm:assignRecord:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="assignRecordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键id" align="center" prop="id" />
       <el-table-column label="关联id" align="center" prop="assignId" />
@@ -109,14 +109,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['crm:record:edit']"
+            v-hasPermi="['crm:assignRecord:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['crm:record:remove']"
+            v-hasPermi="['crm:assignRecord:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -130,7 +130,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改线索分配记录对话框 -->
+    <!-- 添加或修改分配记录对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="关联id" prop="assignId">
@@ -158,10 +158,10 @@
 </template>
 
 <script>
-import { listRecord, getRecord, delRecord, addRecord, updateRecord } from "@/api/crm/record";
+import { listAssignRecord, getAssignRecord, delAssignRecord, addAssignRecord, updateAssignRecord } from "@/api/crm/assignRecord";
 
 export default {
-  name: "Record",
+  name: "AssignRecord",
   data() {
     return {
       // 遮罩层
@@ -176,8 +176,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 线索分配记录表格数据
-      recordList: [],
+      // 分配记录表格数据
+      assignRecordList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -204,11 +204,11 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询线索分配记录列表 */
+    /** 查询分配记录列表 */
     getList() {
       this.loading = true;
-      listRecord(this.queryParams).then(response => {
-        this.recordList = response.rows;
+      listAssignRecord(this.queryParams).then(response => {
+        this.assignRecordList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -253,16 +253,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加线索分配记录";
+      this.title = "添加分配记录";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getRecord(id).then(response => {
+      getAssignRecord(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改线索分配记录";
+        this.title = "修改分配记录";
       });
     },
     /** 提交按钮 */
@@ -270,13 +270,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateRecord(this.form).then(response => {
+            updateAssignRecord(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addRecord(this.form).then(response => {
+            addAssignRecord(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -288,8 +288,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除线索分配记录编号为"' + ids + '"的数据项？').then(function() {
-        return delRecord(ids);
+      this.$modal.confirm('是否确认删除分配记录编号为"' + ids + '"的数据项？').then(function() {
+        return delAssignRecord(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -297,9 +297,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('crm/record/export', {
+      this.download('crm/assignRecord/export', {
         ...this.queryParams
-      }, `record_${new Date().getTime()}.xlsx`)
+      }, `assignRecord_${new Date().getTime()}.xlsx`)
     }
   }
 };

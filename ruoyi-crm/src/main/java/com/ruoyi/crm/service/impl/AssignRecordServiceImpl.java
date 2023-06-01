@@ -9,10 +9,10 @@ import com.ruoyi.crm.domain.AssignRecord;
 import com.ruoyi.crm.service.IAssignRecordService;
 
 /**
- * 线索分配记录Service业务层处理
+ * 分配记录Service业务层处理
  * 
  * @author ruoyi
- * @date 2023-05-29
+ * @date 2023-05-30
  */
 @Service
 public class AssignRecordServiceImpl implements IAssignRecordService 
@@ -21,10 +21,10 @@ public class AssignRecordServiceImpl implements IAssignRecordService
     private AssignRecordMapper assignRecordMapper;
 
     /**
-     * 查询线索分配记录
+     * 查询分配记录
      * 
-     * @param id 线索分配记录主键
-     * @return 线索分配记录
+     * @param id 分配记录主键
+     * @return 分配记录
      */
     @Override
     public AssignRecord selectAssignRecordById(Long id)
@@ -33,10 +33,10 @@ public class AssignRecordServiceImpl implements IAssignRecordService
     }
 
     /**
-     * 查询线索分配记录列表
+     * 查询分配记录列表
      * 
-     * @param assignRecord 线索分配记录
-     * @return 线索分配记录
+     * @param assignRecord 分配记录
+     * @return 分配记录
      */
     @Override
     public List<AssignRecord> selectAssignRecordList(AssignRecord assignRecord)
@@ -45,9 +45,9 @@ public class AssignRecordServiceImpl implements IAssignRecordService
     }
 
     /**
-     * 新增线索分配记录
+     * 新增分配记录
      * 
-     * @param assignRecord 线索分配记录
+     * @param assignRecord 分配记录
      * @return 结果
      */
     @Override
@@ -58,9 +58,9 @@ public class AssignRecordServiceImpl implements IAssignRecordService
     }
 
     /**
-     * 修改线索分配记录
+     * 修改分配记录
      * 
-     * @param assignRecord 线索分配记录
+     * @param assignRecord 分配记录
      * @return 结果
      */
     @Override
@@ -70,9 +70,9 @@ public class AssignRecordServiceImpl implements IAssignRecordService
     }
 
     /**
-     * 批量删除线索分配记录
+     * 批量删除分配记录
      * 
-     * @param ids 需要删除的线索分配记录主键
+     * @param ids 需要删除的分配记录主键
      * @return 结果
      */
     @Override
@@ -82,9 +82,9 @@ public class AssignRecordServiceImpl implements IAssignRecordService
     }
 
     /**
-     * 删除线索分配记录信息
+     * 删除分配记录信息
      * 
-     * @param id 线索分配记录主键
+     * @param id 分配记录主键
      * @return 结果
      */
     @Override

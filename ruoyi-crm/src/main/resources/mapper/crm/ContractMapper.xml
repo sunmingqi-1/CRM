@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectContractList" parameterType="Contract" resultMap="ContractResult">
         <include refid="selectContractVo"/>
-        <where>  
+        <where>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="contractNo != null  and contractNo != ''"> and contract_no = #{contractNo}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
@@ -53,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="coursePrice != null "> and course_price = #{coursePrice}</if>
             <if test="processInstanceId != null  and processInstanceId != ''"> and process_instance_id = #{processInstanceId}</if>
             <if test="businessId != null "> and business_id = #{businessId}</if>
+            <if test="endTime != null and endTime!='' "> create_time between #{startTime} and #{endTime} </if>
         </where>
     </select>
     

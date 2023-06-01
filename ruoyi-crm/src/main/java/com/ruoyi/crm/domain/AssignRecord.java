@@ -6,10 +6,10 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 线索分配记录对象 tb_assign_record
+ * 分配记录对象 tb_assign_record
  * 
  * @author ruoyi
- * @date 2023-05-29
+ * @date 2023-05-30
  */
 public class AssignRecord extends BaseEntity
 {

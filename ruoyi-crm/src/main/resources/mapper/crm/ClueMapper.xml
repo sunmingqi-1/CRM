@@ -32,7 +32,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectClueList" parameterType="Clue" resultMap="ClueResult">
         <include refid="selectClueVo"/>
-        <where>  
+        <where>
+            <if test="id != null  and id != ''"> and id = #{id}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="channel != null  and channel != ''"> and channel = #{channel}</if>
@@ -47,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="falseCount != null "> and false_count = #{falseCount}</if>
             <if test="nextTime != null "> and next_time = #{nextTime}</if>
             <if test="transfer != null  and transfer != ''"> and transfer = #{transfer}</if>
-            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="endTime != null and endTime !='' "> and create_time BETWEEN #{startTime} and #{endTime}</if>
         </where>
     </select>
     

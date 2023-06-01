@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 课程管理对象 tb_course
  * 
@@ -46,7 +48,27 @@ public class Course extends BaseEntity
     @Excel(name = "是否删除 1 是")
     private Long isDelete;
 
-    public void setId(Long id) 
+    private String startTime;
+    private String endTime;
+
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

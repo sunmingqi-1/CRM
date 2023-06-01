@@ -1,14 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="手机号" prop="phone">
-        <el-input
-          v-model="queryParams.phone"
-          placeholder="请输入手机号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="合同编号" prop="contractNo">
         <el-input
           v-model="queryParams.contractNo"
@@ -25,47 +17,23 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="邮箱地址" prop="email">
+      <el-form-item label="手机号" prop="phone">
         <el-input
-          v-model="queryParams.email"
-          placeholder="请输入邮箱地址"
+          v-model="queryParams.phone"
+          placeholder="请输入手机号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="意向学科" prop="subject">
+      <el-form-item label="购买学科" prop="subject">
         <el-input
           v-model="queryParams.subject"
-          placeholder="请输入意向学科"
+          placeholder="请输入购买学科"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="活动id" prop="activityId">
-        <el-input
-          v-model="queryParams.activityId"
-          placeholder="请输入活动id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="活动名称" prop="activityName">
-        <el-input
-          v-model="queryParams.activityName"
-          placeholder="请输入活动名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="课程id" prop="courseId">
-        <el-input
-          v-model="queryParams.courseId"
-          placeholder="请输入课程id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="课程名称" prop="courseName">
+      <el-form-item label="购买名称" prop="courseName">
         <el-input
           v-model="queryParams.courseName"
           placeholder="请输入课程名称"
@@ -73,53 +41,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="渠道" prop="channel">
-        <el-input
-          v-model="queryParams.channel"
-          placeholder="请输入渠道"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId">
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="订单价格" prop="contractOrder">
-        <el-input
-          v-model="queryParams.contractOrder"
-          placeholder="请输入订单价格"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="课程价格" prop="coursePrice">
-        <el-input
-          v-model="queryParams.coursePrice"
-          placeholder="请输入课程价格"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="${comment}" prop="processInstanceId">
-        <el-input
-          v-model="queryParams.processInstanceId"
-          placeholder="请输入${comment}"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商机ID" prop="businessId">
-        <el-input
-          v-model="queryParams.businessId"
-          placeholder="请输入商机ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="创建时间" prop="data">
+        <el-date-picker
+          v-model="queryParams.data"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
+        >
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -174,26 +105,11 @@
     </el-row>
 
     <el-table v-loading="loading" :data="contractList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="合同id" align="center" prop="id" />
-      <el-table-column label="手机号" align="center" prop="phone" />
       <el-table-column label="合同编号" align="center" prop="contractNo" />
       <el-table-column label="客户姓名" align="center" prop="name" />
-      <el-table-column label="邮箱地址" align="center" prop="email" />
-      <el-table-column label="意向学科" align="center" prop="subject" />
-      <el-table-column label="活动id" align="center" prop="activityId" />
-      <el-table-column label="活动名称" align="center" prop="activityName" />
-      <el-table-column label="课程id" align="center" prop="courseId" />
-      <el-table-column label="课程名称" align="center" prop="courseName" />
-      <el-table-column label="渠道" align="center" prop="channel" />
-      <el-table-column label="状态(待审核1，已通过2，已驳回3 全部完成4)" align="center" prop="status" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="文件名称" align="center" prop="fileName" />
-      <el-table-column label="订单价格" align="center" prop="contractOrder" />
-      <el-table-column label="折扣类型" align="center" prop="discountType" />
-      <el-table-column label="课程价格" align="center" prop="coursePrice" />
-      <el-table-column label="${comment}" align="center" prop="processInstanceId" />
-      <el-table-column label="商机ID" align="center" prop="businessId" />
+      <el-table-column label="手机号" align="center" prop="phone" />
+      <el-table-column label="购买学科" align="center" prop="subject" :formatter="selectSubejct" />
+      <el-table-column label="购买课程" align="center" prop="courseName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -213,7 +129,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -287,6 +203,7 @@ import { listContract, getContract, delContract, addContract, updateContract } f
 
 export default {
   name: "Contract",
+  dicts:["course_subject"],
   data() {
     return {
       // 遮罩层
@@ -328,7 +245,10 @@ export default {
         discountType: null,
         coursePrice: null,
         processInstanceId: null,
-        businessId: null
+        businessId: null,
+        data:[],
+        startTime:null,
+        endTime:null
       },
       // 表单参数
       form: {},
@@ -381,12 +301,20 @@ export default {
         discountType: null,
         coursePrice: null,
         processInstanceId: null,
-        businessId: null
+        businessId: null,
+
       };
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
+      if(this.queryParams.data!=null){
+        this.queryParams.startTime = this.queryParams.data[0].toString();
+        this.queryParams.endTime = this.queryParams.data[1].toString();
+      }else {
+        this.queryParams.startTime = null;
+        this.queryParams.endTime = null;
+      }
       this.queryParams.pageNum = 1;
       this.getList();
     },
@@ -452,7 +380,10 @@ export default {
       this.download('crm/contract/export', {
         ...this.queryParams
       }, `contract_${new Date().getTime()}.xlsx`)
+    }, selectSubejct(row){
+      return this.selectDictLabel(this.dict.type.course_subject,row.subject)
     }
+
   }
 };
 </script>

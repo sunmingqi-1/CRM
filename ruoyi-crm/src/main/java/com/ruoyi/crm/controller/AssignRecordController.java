@@ -22,22 +22,22 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 线索分配记录Controller
+ * 分配记录Controller
  * 
  * @author ruoyi
- * @date 2023-05-29
+ * @date 2023-05-30
  */
 @RestController
-@RequestMapping("/crm/record")
+@RequestMapping("/crm/assignRecord")
 public class AssignRecordController extends BaseController
 {
     @Autowired
     private IAssignRecordService assignRecordService;
 
     /**
-     * 查询线索分配记录列表
+     * 查询分配记录列表
      */
-    @PreAuthorize("@ss.hasPermi('crm:record:list')")
+    @PreAuthorize("@ss.hasPermi('crm:assignRecord:list')")
     @GetMapping("/list")
     public TableDataInfo list(AssignRecord assignRecord)
     {
@@ -47,22 +47,22 @@ public class AssignRecordController extends BaseController
     }
 
     /**
-     * 导出线索分配记录列表
+     * 导出分配记录列表
      */
-    @PreAuthorize("@ss.hasPermi('crm:record:export')")
-    @Log(title = "线索分配记录", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('crm:assignRecord:export')")
+    @Log(title = "分配记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AssignRecord assignRecord)
     {
         List<AssignRecord> list = assignRecordService.selectAssignRecordList(assignRecord);
         ExcelUtil<AssignRecord> util = new ExcelUtil<AssignRecord>(AssignRecord.class);
-        util.exportExcel(response, list, "线索分配记录数据");
+        util.exportExcel(response, list, "分配记录数据");
     }
 
     /**
-     * 获取线索分配记录详细信息
+     * 获取分配记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('crm:record:query')")
+    @PreAuthorize("@ss.hasPermi('crm:assignRecord:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -70,10 +70,10 @@ public class AssignRecordController extends BaseController
     }
 
     /**
-     * 新增线索分配记录
+     * 新增分配记录
      */
-    @PreAuthorize("@ss.hasPermi('crm:record:add')")
-    @Log(title = "线索分配记录", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('crm:assignRecord:add')")
+    @Log(title = "分配记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody AssignRecord assignRecord)
     {
@@ -81,10 +81,10 @@ public class AssignRecordController extends BaseController
     }
 
     /**
-     * 修改线索分配记录
+     * 修改分配记录
      */
-    @PreAuthorize("@ss.hasPermi('crm:record:edit')")
-    @Log(title = "线索分配记录", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('crm:assignRecord:edit')")
+    @Log(title = "分配记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody AssignRecord assignRecord)
     {
@@ -92,10 +92,10 @@ public class AssignRecordController extends BaseController
     }
 
     /**
-     * 删除线索分配记录
+     * 删除分配记录
      */
-    @PreAuthorize("@ss.hasPermi('crm:record:remove')")
-    @Log(title = "线索分配记录", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('crm:assignRecord:remove')")
+    @Log(title = "分配记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

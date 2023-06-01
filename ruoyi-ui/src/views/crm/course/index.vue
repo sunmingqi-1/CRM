@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="代码" prop="code">
+      <el-form-item label="编码" prop="code">
         <el-input
           v-model="queryParams.code"
           placeholder="请输入代码"
@@ -18,44 +18,35 @@
         />
       </el-form-item>
       <el-form-item label="学科" prop="subject">
-        <el-input
-          v-model="queryParams.subject"
-          placeholder="请输入学科"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="价格" prop="price">
-        <el-input
-          v-model="queryParams.price"
-          placeholder="请输入价格"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.subject" placeholder="请输入学科" clearable    @keyup.enter.native="handleQuery">
+          <el-option
+            v-for="dict in dict.type.course_subject"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="适应人群" prop="applicablePerson">
-        <el-input
-          v-model="queryParams.applicablePerson"
-          placeholder="请输入适应人群"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.applicablePerson" placeholder="请输入适应人群" clearable    @keyup.enter.native="handleQuery">
+          <el-option
+            v-for="dict in dict.type.applicable_person"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="课程描述信息" prop="info">
-        <el-input
-          v-model="queryParams.info"
-          placeholder="请输入课程描述信息"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否删除 1 是" prop="isDelete">
-        <el-input
-          v-model="queryParams.isDelete"
-          placeholder="请输入是否删除 1 是"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="创建时间" prop="data">
+          <el-date-picker
+            v-model="queryParams.data"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -112,13 +103,12 @@
     <el-table v-loading="loading" :data="courseList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="课程id" align="center" prop="id" />
-      <el-table-column label="代码" align="center" prop="code" />
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="学科" align="center" prop="subject" />
+      <el-table-column label="编码" align="center" prop="code" />
+      <el-table-column label="学科/名称" align="center" prop="subject" :formatter="subjecta" />
       <el-table-column label="价格" align="center" prop="price" />
-      <el-table-column label="适应人群" align="center" prop="applicablePerson" />
+      <el-table-column label="适应人群" align="center" prop="applicablePerson" :formatter="selectapplicable_person" />
       <el-table-column label="课程描述信息" align="center" prop="info" />
-      <el-table-column label="是否删除 1 是" align="center" prop="isDelete" />
+      <el-table-column label="是否删除" align="center" prop="isDelete" :formatter="deis_delete" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -138,7 +128,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -157,13 +147,27 @@
           <el-input v-model="form.name" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="学科" prop="subject">
-          <el-input v-model="form.subject" placeholder="请输入学科" />
+          <el-select v-model="form.subject" placeholder="请输入学科" clearable    @keyup.enter.native="handleQuery">
+            <el-option
+              v-for="dict in dict.type.course_subject"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="价格" prop="price">
           <el-input v-model="form.price" placeholder="请输入价格" />
         </el-form-item>
         <el-form-item label="适应人群" prop="applicablePerson">
-          <el-input v-model="form.applicablePerson" placeholder="请输入适应人群" />
+          <el-select v-model="form.applicablePerson" placeholder="请输入适应人群" clearable    @keyup.enter.native="handleQuery">
+            <el-option
+              v-for="dict in dict.type.applicable_person"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="课程描述信息" prop="info">
           <el-input v-model="form.info" placeholder="请输入课程描述信息" />
@@ -185,6 +189,7 @@ import { listCourse, getCourse, delCourse, addCourse, updateCourse } from "@/api
 
 export default {
   name: "Course",
+  dicts: ['course_subject', 'applicable_person','sis_delete'],
   data() {
     return {
       // 遮罩层
@@ -215,10 +220,15 @@ export default {
         price: null,
         applicablePerson: null,
         info: null,
-        isDelete: null
+        isDelete: null,
+        startTime: '',
+        endTime: '',
+        data:[]
       },
       // 表单参数
-      form: {},
+      form: {
+
+      },
       // 表单校验
       rules: {
         isDelete: [
@@ -231,8 +241,12 @@ export default {
     this.getList();
   },
   methods: {
+    dateformatter(picker){
+
+    },
     /** 查询课程管理列表 */
     getList() {
+
       this.loading = true;
       listCourse(this.queryParams).then(response => {
         this.courseList = response.rows;
@@ -262,6 +276,13 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
+      if(this.queryParams.data!=null){
+        this.queryParams.startTime=this.queryParams.data[0].toString();
+        this.queryParams.endTime=this.queryParams.data[1].toString();
+      }else {
+        this.queryParams.startTime=null;
+        this.queryParams.endTime=null
+      }
       this.queryParams.pageNum = 1;
       this.getList();
     },
@@ -327,6 +348,14 @@ export default {
       this.download('crm/course/export', {
         ...this.queryParams
       }, `course_${new Date().getTime()}.xlsx`)
+    },subjecta(row){
+      return this.selectDictLabel(this.dict.type.course_subject,row.subject)+"/"+row.name
+    },
+    selectapplicable_person(row){
+      return this.selectDictLabel(this.dict.type.applicable_person,row.applicablePerson)
+    },
+    deis_delete(row){
+      return this.selectDictLabel(this.dict.type.sis_delete,row.isDelete)
     }
   }
 };

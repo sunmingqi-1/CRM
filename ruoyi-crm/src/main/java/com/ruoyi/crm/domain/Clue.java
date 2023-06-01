@@ -77,9 +77,8 @@ public class Clue extends BaseEntity
     private String transfer;
 
     /** 线索失效时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "线索失效时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date endTime;
+    private String startTime;
+    private String endTime;
 
     public void setId(Long id) 
     {
@@ -216,14 +215,21 @@ public class Clue extends BaseEntity
     {
         return transfer;
     }
-    public void setEndTime(Date endTime) 
-    {
-        this.endTime = endTime;
+
+    public String getStartTime() {
+        return startTime;
     }
 
-    public Date getEndTime() 
-    {
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     @Override
