@@ -82,7 +82,7 @@ export default {
           addAssignRecord(assignList).then(resp => {
             if (resp.code == 200) {
               this.$modal.msgSuccess("分配成功")
-              this.open = false;
+              this.open = false
               this.$emit('ok')
               this.form = {
                 deptId: null,
