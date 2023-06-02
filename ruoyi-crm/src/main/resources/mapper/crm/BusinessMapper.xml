@@ -46,7 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBusinessList" parameterType="Business" resultMap="BusinessResult">
         <include refid="selectBusinessVo"/>
-        <where>  
+        <where>
+            <if test="id != null  and id != ''"> and id =#{id}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="channel != null  and channel != ''"> and channel = #{channel}</if>
@@ -75,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="lastUpdateTime != null "> and last_update_time = #{lastUpdateTime}</if>
             <if test="clueId != null "> and clue_id = #{clueId}</if>
             <if test="transfer != null  and transfer != ''"> and transfer = #{transfer}</if>
-            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="endTime != null and endTime!='' "> and create_time BETWEEN #{starTime} and #{endTime}</if>
         </where>
     </select>
     

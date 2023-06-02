@@ -79,8 +79,17 @@ public class Clue extends BaseEntity
     /** 线索失效时间 */
     private String startTime;
     private String endTime;
+    private String guishu;
 
-    public void setId(Long id) 
+    public String getGuishu() {
+        return guishu;
+    }
+
+    public void setGuishu(String guishu) {
+        this.guishu = guishu;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

@@ -2,6 +2,7 @@ package com.ruoyi.crm.mapper;
 
 import java.util.List;
 import com.ruoyi.crm.domain.AssignRecord;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 分配记录Mapper接口
@@ -58,4 +59,6 @@ public interface AssignRecordMapper
      * @return 结果
      */
     public int deleteAssignRecordByIds(Long[] ids);
+
+    void updateLatest(@Param("assignId") Long assignId,@Param("lastest") String lastest,@Param("type") String type);
 }

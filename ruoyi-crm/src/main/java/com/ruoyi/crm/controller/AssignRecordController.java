@@ -75,9 +75,9 @@ public class AssignRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('crm:assignRecord:add')")
     @Log(title = "分配记录", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AssignRecord assignRecord)
+    public AjaxResult add(@RequestBody List<AssignRecord>  assignRecord)
     {
-        return toAjax(assignRecordService.insertAssignRecord(assignRecord));
+        return toAjax(assignRecordService.insertAssignRecords(assignRecord));
     }
 
     /**
@@ -86,9 +86,9 @@ public class AssignRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('crm:assignRecord:edit')")
     @Log(title = "分配记录", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AssignRecord assignRecord)
+    public AjaxResult edit(@RequestBody  AssignRecord  assignRecords)
     {
-        return toAjax(assignRecordService.updateAssignRecord(assignRecord));
+        return toAjax(assignRecordService.updateAssignRecord(assignRecords));
     }
 
     /**

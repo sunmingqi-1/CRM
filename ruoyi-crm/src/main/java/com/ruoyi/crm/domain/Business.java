@@ -136,10 +136,9 @@ public class Business extends BaseEntity
     private String transfer;
 
     /** 回收时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "回收时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date endTime;
+    private String endTime;
 
+    private String starTime;
     public void setId(Long id) 
     {
         this.id = id;
@@ -401,14 +400,21 @@ public class Business extends BaseEntity
     {
         return transfer;
     }
-    public void setEndTime(Date endTime) 
-    {
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public Date getEndTime() 
-    {
-        return endTime;
+    public String getStarTime() {
+        return starTime;
+    }
+
+    public void setStarTime(String starTime) {
+        this.starTime = starTime;
     }
 
     @Override

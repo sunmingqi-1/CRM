@@ -58,4 +58,6 @@ public interface IAssignRecordService
      * @return 结果
      */
     public int deleteAssignRecordById(Long id);
+
+    int insertAssignRecords(List<AssignRecord> assignRecord);
 }

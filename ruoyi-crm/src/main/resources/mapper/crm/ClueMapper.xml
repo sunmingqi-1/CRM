@@ -31,24 +31,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectClueList" parameterType="Clue" resultMap="ClueResult">
-        <include refid="selectClueVo"/>
+        select id, name, phone, channel, activity_id, sex, age, weixin, qq, level, subject, status, create_time,
+        create_by, false_count, next_time, update_time, transfer, end_time,
+        (select user_name from tb_assign_record where type = 0 and assign_id = tb_clue.id and latest ='1' Limit 1)
+        guishu
+        from tb_clue
         <where>
-            <if test="id != null  and id != ''"> and id = #{id}</if>
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
-            <if test="channel != null  and channel != ''"> and channel = #{channel}</if>
-            <if test="activityId != null "> and activity_id = #{activityId}</if>
-            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
-            <if test="age != null "> and age = #{age}</if>
-            <if test="weixin != null  and weixin != ''"> and weixin = #{weixin}</if>
-            <if test="qq != null  and qq != ''"> and qq = #{qq}</if>
-            <if test="level != null  and level != ''"> and level = #{level}</if>
-            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
-            <if test="falseCount != null "> and false_count = #{falseCount}</if>
-            <if test="nextTime != null "> and next_time = #{nextTime}</if>
-            <if test="transfer != null  and transfer != ''"> and transfer = #{transfer}</if>
-            <if test="endTime != null and endTime !='' "> and create_time BETWEEN #{startTime} and #{endTime}</if>
+            <if test="id != null  and id != ''">and id = #{id}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="phone != null  and phone != ''">and phone = #{phone}</if>
+            <if test="channel != null  and channel != ''">and channel = #{channel}</if>
+            <if test="activityId != null ">and activity_id = #{activityId}</if>
+            <if test="sex != null  and sex != ''">and sex = #{sex}</if>
+            <if test="age != null ">and age = #{age}</if>
+            <if test="weixin != null  and weixin != ''">and weixin = #{weixin}</if>
+            <if test="qq != null  and qq != ''">and qq = #{qq}</if>
+            <if test="level != null  and level != ''">and level = #{level}</if>
+            <if test="subject != null  and subject != ''">and subject = #{subject}</if>
+            <if test="status != null  and status != ''">and status = #{status}</if>
+            <if test="falseCount != null ">and false_count = #{falseCount}</if>
+            <if test="nextTime != null ">and next_time = #{nextTime}</if>
+            <if test="transfer != null  and transfer != ''">and transfer = #{transfer}</if>
+            <if test="endTime != null and endTime !='' ">and create_time BETWEEN #{startTime} and #{endTime}</if>
         </where>
     </select>
     

@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="vouchers != null "> and vouchers = #{vouchers}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
             <if test="endTime != null "> and end_time = #{endTime}</if>
             <if test="code != null  and code != ''"> and code = #{code}</if>
         </where>

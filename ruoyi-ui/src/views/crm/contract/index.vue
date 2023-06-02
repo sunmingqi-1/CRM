@@ -26,12 +26,15 @@
         />
       </el-form-item>
       <el-form-item label="购买学科" prop="subject">
-        <el-input
-          v-model="queryParams.subject"
-          placeholder="请输入购买学科"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.channel" placeholder="请输入购买学科" clearable
+                   @keyup.enter.native="handleQuery">
+          <el-option
+            v-for="dict in dict.type.course_subject"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="购买名称" prop="courseName">
         <el-input
