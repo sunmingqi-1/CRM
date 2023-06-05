@@ -1,7 +1,7 @@
 <template>
-  <el-dialog title="分配线索" :visible.sync="open">
+  <el-dialog :title="shangji+'分配'" :visible.sync="open">
     <el-tag>
-      你选择了{{ ids.length }}
+      你选择了{{ ids.length }}{{ shangji }}
     </el-tag>
     <el-form :model="form" ref="form">
       <el-row :gutter="5">
@@ -44,6 +44,7 @@ export default {
     return {
       ids: [],
       open: false,
+      shangji: null,
       form: {
         userId: null,
         deptId: null,
@@ -99,18 +100,32 @@ export default {
       }
       this.open = false;
     }, idToList() {
-      let list =[];
-     let userName= this.deptChOptions.find(item => item.userId ==this.form.userId).userName;
-      for (let id of this.ids) {
-        let item = {
-          assignId: id,
-          type: '0',
-          userId: this.form.userId,
-          userName: userName,
-          deptId: this.form.deptId,
+      let list = [];
+      let userName = this.deptChOptions.find(item => item.userId == this.form.userId).userName;
+      if(this.shangji=="线索"){
+        for (let id of this.ids) {
+          let item = {
+            assignId: id,
+            type: '0',
+            userId: this.form.userId,
+            userName: userName,
+            deptId: this.form.deptId,
+          }
+          list.push(item)
         }
-        list.push(item)
+      }else {
+        for (let id of this.ids) {
+          let item = {
+            assignId: id,
+            type: '1',
+            userId: this.form.userId,
+            userName: userName,
+            deptId: this.form.deptId,
+          }
+          list.push(item)
+        }
       }
+
       return list;
     }
   }

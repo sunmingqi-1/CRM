@@ -108,14 +108,25 @@
         >导出
         </el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleBusins"
+        >批量分配
+        </el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="businessList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="客户ID" align="center" prop="id"/>
       <el-table-column label="客户姓名" align="center" prop="name"/>
       <el-table-column label="手机号" align="center" prop="phone"/>
-      <el-table-column label="归属人" align="center" prop="createBy"/>
+      <el-table-column label="归属" align="center" prop="guishu"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -144,6 +155,14 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['crm:business:remove']"
           >删除
+          </el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleBusin([scope.row.id])"
+            v-hasPermi="['crm:business:remove']"
+          >分配
           </el-button>
         </template>
       </el-table-column>
@@ -270,15 +289,18 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <assign-run ref="assign" @ok="getList"></assign-run>
   </div>
 </template>
 
 <script>
 import {listBusiness, getBusiness, delBusiness, addBusiness, updateBusiness} from "@/api/crm/business";
+import AssignRun from '@/views/crm/clue/components/assign';
 
 export default {
   name: "Business",
-  dicts:["clue_status"],
+  dicts: ["clue_status"],
+  components: {AssignRun},
   data() {
     return {
       // 遮罩层
@@ -303,7 +325,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        id:null,
+        id: null,
         name: null,
         phone: null,
         channel: null,
@@ -332,7 +354,7 @@ export default {
         lastUpdateTime: null,
         clueId: null,
         transfer: null,
-        starTime:null,
+        starTime: null,
         endTime: null
       },
       // 表单参数
@@ -394,55 +416,55 @@ export default {
         clueId: null,
         transfer: null,
         remark: null,
-        data:[],
-        starTime:null,
+        data: [],
+        starTime: null,
         endTime: null
       };
       this.resetForm("form");
-    },restZ(){
-     this.queryParams = {
+    }, restZ() {
+      this.queryParams = {
         pageNum: 1,
-          pageSize: 10,
-          id:null,
-          name: null,
-          phone: null,
-          channel: null,
-          activityId: null,
-          provinces: null,
-          city: null,
-          sex: null,
-          age: null,
-          weixin: null,
-          qq: null,
-          level: null,
-          subject: null,
-          courseId: null,
-          occupation: null,
-          education: null,
-          job: null,
-          salary: null,
-          major: null,
-          expectedSalary: null,
-          reasons: null,
-          plan: null,
-          planTime: null,
-          otherIntention: null,
-          status: null,
-          nextTime: null,
-          lastUpdateTime: null,
-          clueId: null,
-          transfer: null,
-          data:[],
-          starTime:null,
-          endTime: null
+        pageSize: 10,
+        id: null,
+        name: null,
+        phone: null,
+        channel: null,
+        activityId: null,
+        provinces: null,
+        city: null,
+        sex: null,
+        age: null,
+        weixin: null,
+        qq: null,
+        level: null,
+        subject: null,
+        courseId: null,
+        occupation: null,
+        education: null,
+        job: null,
+        salary: null,
+        major: null,
+        expectedSalary: null,
+        reasons: null,
+        plan: null,
+        planTime: null,
+        otherIntention: null,
+        status: null,
+        nextTime: null,
+        lastUpdateTime: null,
+        clueId: null,
+        transfer: null,
+        data: [],
+        starTime: null,
+        endTime: null
       }
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      if(this.queryParams.data!=null){
+      if (this.queryParams.data != null) {
         this.queryParams.starTime = this.queryParams.data[0].toString();
         this.queryParams.endTime = this.queryParams.data[1].toString();
-      }else {
+      } else {
         this.queryParams.starTime = null;
         this.queryParams.endTime = null;
       }
@@ -512,8 +534,18 @@ export default {
       this.download('crm/business/export', {
         ...this.queryParams
       }, `business_${new Date().getTime()}.xlsx`)
-    },selectStatus(row){
-        return this.selectDictLabel(this.dict.type.clue_status,row.status)
+    }, selectStatus(row) {
+      return this.selectDictLabel(this.dict.type.clue_status, row.status)
+    }, handleBusin(row) {
+      this.$refs.assign.open = true;
+      this.$refs.assign.ids = row;
+      this.$refs.assign.shangji = '商机'
+    }, handleBusins() {
+      if (this.ids && this.ids.length > 0) {
+        this.handleBusin(this.ids);
+      } else {
+        this.$modal.alert("请选择至少一项");
+      }
     }
   }
 };

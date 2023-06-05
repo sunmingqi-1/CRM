@@ -96,6 +96,7 @@ public class Business extends BaseEntity
     @Excel(name = "希望薪资")
     private String expectedSalary;
 
+    private String guishu;
     /** 学习原因 */
     @Excel(name = "学习原因")
     private String reasons;
@@ -139,7 +140,16 @@ public class Business extends BaseEntity
     private String endTime;
 
     private String starTime;
-    public void setId(Long id) 
+
+    public String getGuishu() {
+        return guishu;
+    }
+
+    public void setGuishu(String guishu) {
+        this.guishu = guishu;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

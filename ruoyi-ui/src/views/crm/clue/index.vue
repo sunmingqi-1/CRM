@@ -112,6 +112,17 @@
         >批量分配
         </el-button>
       </el-col>
+
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleBatchAdd"
+        >批量添加
+        </el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -230,17 +241,19 @@
       </div>
     </el-dialog>
     <assign-run ref="assignDialog" @ok="getList"></assign-run>
+    <batch-add ref="batchAddLog"></batch-add>
   </div>
 </template>
 
 <script>
 import {listClue, getClue, delClue, addClue, updateClue} from "@/api/crm/clue";
 import AssignRun from '@/views/crm/clue/components/assign';
+import BatchAdd from '@/views/crm/clue/components/batch-add'
 
 export default {
   name: "Clue",
   dicts: ["clues_item", "sys_user_sex", "course_subject", "clues_level", "clue_status"],
-  components: {AssignRun},
+  components: { AssignRun, BatchAdd },
   data() {
     return {
       // 遮罩层
@@ -311,7 +324,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        id:null,
+        id: null,
         name: null,
         phone: null,
         channel: null,
@@ -426,13 +439,16 @@ export default {
     }, handleAssign(row) {
       this.$refs.assignDialog.open = true;
       this.$refs.assignDialog.ids = row;
+      this.$refs.assignDialog.shangji = '线索'
     },
     handleBatchAssign() {
       if (this.ids && this.ids.length > 0) {
-          this.handleAssign(this.ids)
-      }else {
+        this.handleAssign(this.ids)
+      } else {
         this.$modal.alert("请选择至少一项");
       }
+    }, handleBatchAdd() {
+      this.$refs.batchAddLog.open=true;
     }
   }
 };

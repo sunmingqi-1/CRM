@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.crm.domain.Business;
 import com.ruoyi.crm.domain.Clue;
+import com.ruoyi.crm.mapper.BusinessMapper;
 import com.ruoyi.crm.mapper.ClueMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,8 @@ public class AssignRecordServiceImpl implements IAssignRecordService
     private AssignRecordMapper assignRecordMapper;
     @Resource
     private ClueMapper clueMapper;
-
+    @Resource
+    private BusinessMapper businessMapper;
     /**
      * 查询分配记录
      * 
@@ -69,12 +72,18 @@ public class AssignRecordServiceImpl implements IAssignRecordService
             clue.setUpdateBy(SecurityUtils.getUsername());
             clue.setUpdateTime(new Date());
             clueMapper.updateClue(clue);
+            assignRecordMapper.updateLatest(assignRecord.getAssignId(),"0","0");
+            assignRecord.setType("0");
         }else if (assignRecord.getType().equals("1")){
-
+            Business business = businessMapper.selectBusinessById(assignRecord.getAssignId());
+            business.setStatus("1");
+            business.setUpdateBy(SecurityUtils.getUsername());
+            business.setUpdateTime(new Date());
+            businessMapper.updateBusiness(business);
+            assignRecordMapper.updateLatest(assignRecord.getAssignId(),"0","1");
+            assignRecord.setType("1");
         }
-        assignRecordMapper.updateLatest(assignRecord.getAssignId(),"0",assignRecord.getType());
         assignRecord.setLatest("1");
-        assignRecord.setType("0");
         assignRecord.setCreateTime(DateUtils.getNowDate());
         return assignRecordMapper.insertAssignRecord(assignRecord);
     }
